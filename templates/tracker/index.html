@@ -1,0 +1,17 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li
+            {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+    <div class="btn-group-vertical">
+    <a class="btn btn-primary" href="{% url 'add_sugar_level' %}">Add Sugar Level</a>
+    <a class="btn btn-primary" href="{% url 'add_meal' %}">Add Meal</a>
+    </div>
+
+{% endblock content %}

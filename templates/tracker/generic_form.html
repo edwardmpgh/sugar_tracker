@@ -1,0 +1,27 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+{% block page_title %}{{ title }}{% endblock page_title %}
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="grid-x">
+        <div class="medium-3"></div>
+        <div class="small-12 medium-6">
+            <h1>{{ form_title }}</h1>
+            <form method="post" id="form1">
+                {% load crispy_forms_tags %}
+                {% csrf_token %}
+                {% crispy form %}
+                <br />
+                <button class="success button" type="submit" form="form1" value="Submit">{{ button_title }}</button>
+            </form>
+        </div>
+        <div class="medium-3"></div>
+    </div>
+
+{% endblock content %}
