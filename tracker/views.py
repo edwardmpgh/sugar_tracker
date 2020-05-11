@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -8,11 +9,36 @@ from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django.db import connections
+from django.conf import settings
 
 from .models import SugarLevel, MealTime
 from .forms import SugarForm, MealForm
 
 SYSTEM_TITLE = 'Diabetes Tracker'
+
+
+def login_base(request):
+    next = request.GET.get('next', '/')
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(next)
+            else:
+                return HttpResponse("Inactive user.")
+        else:
+            return HttpResponseRedirect(settings.LOGIN_URL)
+
+    return render(request, "users/login.html", {'redirect_to': next})
+
+
+def logout_base(request):
+    logout(request)
+    return HttpResponseRedirect(settings.LOGIN_URL)
 
 
 @login_required

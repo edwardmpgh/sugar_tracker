@@ -54,6 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'sugar_tracker.urls'
 AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_URL = '/login/'
 
 TEMPLATES = [
     {
