@@ -24,7 +24,7 @@ else:
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'www.diabetit-tracker.com',
+    'www.diabeatit-tracker.com',
     'diabeatit-tracker.com',
 ]
 
