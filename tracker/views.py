@@ -133,7 +133,12 @@ def add_meal(request):
 
 @login_required
 def get_meal_info(request, meal_id):
-
+    """
+    Get the information about a meal
+    :param request:
+    :param meal_id:
+    :return:
+    """
     meal = get_object_or_404(CommonMeals, id=meal_id)
 
     return JsonResponse(data={
