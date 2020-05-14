@@ -9,9 +9,9 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="grid-x" style="padding-right: 20px; padding-left: 20px;">
-        <div class="medium-3"></div>
-        <div class="small-12 medium-6">
+    <div class="row" style="padding-right: 20px; padding-left: 20px;">
+        <div class="col-md-3"></div>
+        <div class="col-sm-12 col-md-6">
             <select name="common-meal" id="common-meal">
                 <option value="0">--Select a meal--</option>
                 {% for meal in common_meals %}
@@ -29,6 +29,6 @@
                 <button class="success button" type="submit" form="form1" value="Submit">{{ button_title }}</button>
             </form>
         </div>
-        <div class="medium-3"></div>
+        <div class="col-md-3"></div>
     </div>
 {% endblock content %}

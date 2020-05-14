@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout, Fieldset, HTML, Field, Hidden
 
 from django.contrib.auth.models import User
 
-from .models import SugarLevel, MealTime
+from .models import SugarLevel, MealTime, CommonMeals
 
 
 class SugarForm(forms.ModelForm):
@@ -39,6 +39,26 @@ class MealForm(forms.ModelForm):
         self.helper.layout = Layout(
             'timestamp',
             'meal_type',
+            'proteins',
+            'fat',
+            'carbohydrates',
+            'comments',
+        )
+
+
+class CommonMealForm(forms.ModelForm):
+
+    class Meta:
+        model = CommonMeals
+        fields = ['name', 'proteins', 'fat', 'carbohydrates', 'comments']
+
+    def __init__(self, *args, **kwargs):
+        super(CommonMealForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        self.helper.layout = Layout(
+            'name',
             'proteins',
             'fat',
             'carbohydrates',

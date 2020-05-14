@@ -9,9 +9,9 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div class="grid-x">
-        <div class="medium-3"></div>
-        <div class="small-12 medium-6">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-sm-12 col-md-6">
             <h1>{{ form_title }}</h1>
             <form method="post" id="form1">
                 {% load crispy_forms_tags %}
@@ -21,7 +21,7 @@
                 <button class="success button" type="submit" form="form1" value="Submit">{{ button_title }}</button>
             </form>
         </div>
-        <div class="medium-3"></div>
+        <div class="col-md-3"></div>
     </div>
 
 {% endblock content %}

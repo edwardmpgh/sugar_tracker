@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout/', views.logout_base),
     path('sugar/new', views.add_sugar_level, name='add_sugar_level'),
     path('meal/new/', views.add_meal, name='add_meal'),
+    path('meal/common/new', views.add_common_meal, name='add_common_meal'),
     # charts
     path('chart/levels', views.sugar_chart, name='sugar_chart'),
     # JSon Responses

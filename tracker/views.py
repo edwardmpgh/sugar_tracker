@@ -18,7 +18,7 @@ from django.db.models import Sum
 from django.http import JsonResponse
 
 from .models import SugarLevel, MealTime, CommonMeals
-from .forms import SugarForm, MealForm
+from .forms import SugarForm, MealForm, CommonMealForm
 
 SYSTEM_TITLE = 'Diabetes Tracker'
 
@@ -131,6 +131,30 @@ def add_meal(request):
     return render(request, 'tracker/meal_form.html', context)
 
 
+def add_common_meal(request):
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='index',
+                   app_page='meal',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+    form = CommonMealForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = current_user
+            form.save()
+            return HttpResponseRedirect(reverse('index'))
+
+    context['form'] = form
+    context['form_title'] = 'Add a Common Meal'
+    context['button_title'] = 'Add'
+
+    return render(request, 'tracker/generic_form.html', context)
+
+
+# JSon Responses
 @login_required
 def get_meal_info(request, meal_id):
     """
