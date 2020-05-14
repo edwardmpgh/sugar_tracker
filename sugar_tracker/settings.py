@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tracker.apps.TrackerConfig',
     'crispy_forms',
+    'chartjs',
     'users',
 ]
 if not HOSTNAME == 'localhost':

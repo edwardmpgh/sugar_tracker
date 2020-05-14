@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -10,8 +12,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django.db import connections
 from django.conf import settings
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
+from django.db.models import Sum
+from django.http import JsonResponse
 
-from .models import SugarLevel, MealTime
+from .models import SugarLevel, MealTime, CommonMeals
 from .forms import SugarForm, MealForm
 
 SYSTEM_TITLE = 'Diabetes Tracker'
@@ -39,6 +45,22 @@ def login_base(request):
 def logout_base(request):
     logout(request)
     return HttpResponseRedirect(settings.LOGIN_URL)
+
+
+@login_required
+def sugar_chart(request):
+    current_user = request.user
+    levels = SugarLevel.objects.filter(trash=False, active=True, user=current_user)
+    labels = []
+    data = []
+    for entry in levels:
+        labels.append(entry.timestamp)
+        data.append(entry.sugar_level)
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
 
 
 @login_required
@@ -105,5 +127,17 @@ def add_meal(request):
     context['form'] = form
     context['form_title'] = 'Add Meal'
     context['button_title'] = 'Add'
+    context['common_meals'] = CommonMeals.objects.filter(trash=False, active=True, user=current_user)
+    return render(request, 'tracker/meal_form.html', context)
 
-    return render(request, 'tracker/generic_form.html', context)
+
+@login_required
+def get_meal_info(request, meal_id):
+
+    meal = get_object_or_404(CommonMeals, id=meal_id)
+
+    return JsonResponse(data={
+        'fat': meal.fat,
+        'carbohydrates': meal.carbohydrates,
+        'protein': meal.proteins,
+    })

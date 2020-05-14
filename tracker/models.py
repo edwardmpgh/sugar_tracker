@@ -70,3 +70,19 @@ class MealTime(CommonField):
 
     def __str__(self):
         return '%s' % self.timestamp
+
+
+class CommonMeals(CommonField):
+    name = models.CharField(max_length=30)
+    fat = models.IntegerField(blank=True, null=True)
+    carbohydrates = models.IntegerField(blank=True, null=True)
+    proteins = models.IntegerField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = '%scommon_meals' % DB_PREFIX
+        ordering = ['name']
+
+    def __str__(self):
+        return '%s' % self.name
