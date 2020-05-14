@@ -9,5 +9,4 @@ $('#common-meal').on('change', function() {
 
       });
   }
-
 });
