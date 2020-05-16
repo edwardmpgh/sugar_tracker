@@ -52,20 +52,46 @@ def logout_base(request):
 def sugar_chart(request):
     current_user = request.user
     levels = SugarLevel.objects.filter(trash=False, active=True, user=current_user)
-    labels = []
-    data = []
-    for entry in levels:
-        labels.append(entry.timestamp)
-        data.append(entry.sugar_level)
+    sugar = []
+    for level in levels:
+        ts = (level.timestamp.astimezone(tzone(settings.TIME_ZONE))).strftime("%Y-%m-%d %H:%M")
+        sugar.append({'x': ts, 'y': level.sugar_level})
 
     return JsonResponse(data={
-        'labels': labels,
-        'data': data,
-    })
+        'datasets': [
+            {'label': 'Sugar Level', 'data': sugar, 'borderColor': '#F39C12', 'fill': 0,
+             'pointBackgroundColor': '#7E5109'},
+        ]
+    },
+    )
 
 
 @login_required
 def meal_chart(request):
+    current_user = request.user
+    meals = MealTime.objects.filter(trash=False, active=True, user=current_user)
+    fat = []
+    proteins = []
+    carbohydrates = []
+    for meal in meals:
+        ts = (meal.timestamp.astimezone(tzone(settings.TIME_ZONE))).strftime("%Y-%m-%d %H:%M")
+        fat.append({'x': ts, 'y': meal.fat})
+        proteins.append({'x': ts, 'y': meal.proteins})
+        carbohydrates.append({'x': ts, 'y': meal.carbohydrates})
+
+    return JsonResponse(data={
+        'datasets': [
+            {'label': 'fat', 'data': fat, 'borderColor': '#CC66FF', 'fill': 0, 'pointBackgroundColor': '#4A235A'},
+            {'label': 'carbohydrates', 'data': carbohydrates, 'borderColor': '#99ff00', 'fill': 0, 'pointBackgroundColor': '#186A3B'},
+            {'label': 'proteins', 'data': proteins, 'borderColor': '#ffff80', 'fill': 0, 'pointBackgroundColor': '#D4AC0D'},
+
+        ]
+    },
+    )
+
+
+@login_required
+def mix_chart(request):
     current_user = request.user
     meals = MealTime.objects.filter(trash=False, active=True, user=current_user)
     fat = []
@@ -85,10 +111,10 @@ def meal_chart(request):
 
     return JsonResponse(data={
         'datasets': [
-            {'label': 'fat', 'data': fat, 'borderColor': '#CC66FF', 'fill': 0},
-            {'label': 'carbohydrates', 'data': carbohydrates, 'borderColor': '#99ff00', 'fill': 0},
-            {'label': 'proteins', 'data': proteins, 'borderColor': '#ffff80', 'fill': 0},
-            {'label': 'Sugar Level', 'data': sugar, 'borderColor': '#F39C12', 'fill': 0},
+            {'label': 'fat', 'data': fat, 'borderColor': '#CC66FF', 'fill': 0, 'pointBackgroundColor': '#4A235A'},
+            {'label': 'carbohydrates', 'data': carbohydrates, 'borderColor': '#99ff00', 'fill': 0, 'pointBackgroundColor': '#186A3B'},
+            {'label': 'proteins', 'data': proteins, 'borderColor': '#ffff80', 'fill': 0, 'pointBackgroundColor': '#D4AC0D'},
+            {'label': 'Sugar Level', 'data': sugar, 'borderColor': '#F39C12', 'fill': 0, 'pointBackgroundColor': '#7E5109'},
         ]
     },
     )

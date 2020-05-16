@@ -13,6 +13,7 @@ urlpatterns = [
     # charts
     path('chart/levels', views.sugar_chart, name='sugar_chart'),
     path('chart/meals', views.meal_chart, name='meal_chart'),
+    path('chart/mix', views.mix_chart, name='mix_chart'),
     # JSon Responses
     path('get/meal/<int:meal_id>/', views.get_meal_info, name='get_meal_info'),
 ]
