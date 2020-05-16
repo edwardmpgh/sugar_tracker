@@ -12,6 +12,7 @@ urlpatterns = [
     path('meal/common/new', views.add_common_meal, name='add_common_meal'),
     # charts
     path('chart/levels', views.sugar_chart, name='sugar_chart'),
+    path('chart/meals', views.meal_chart, name='meal_chart'),
     # JSon Responses
     path('get/meal/<int:meal_id>/', views.get_meal_info, name='get_meal_info'),
 ]

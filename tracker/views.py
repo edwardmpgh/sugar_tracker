@@ -1,4 +1,5 @@
 from datetime import datetime
+from pytz import timezone as tzone
 
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -61,6 +62,36 @@ def sugar_chart(request):
         'labels': labels,
         'data': data,
     })
+
+
+@login_required
+def meal_chart(request):
+    current_user = request.user
+    meals = MealTime.objects.filter(trash=False, active=True, user=current_user)
+    fat = []
+    proteins = []
+    carbohydrates = []
+    for meal in meals:
+        ts = (meal.timestamp.astimezone(tzone(settings.TIME_ZONE))).strftime("%Y-%m-%d %H:%M")
+        fat.append({'x': ts, 'y': meal.fat})
+        proteins.append({'x': ts, 'y': meal.proteins})
+        carbohydrates.append({'x': ts, 'y': meal.carbohydrates})
+
+    levels = SugarLevel.objects.filter(trash=False, active=True, user=current_user)
+    sugar = []
+    for level in levels:
+        ts = (level.timestamp.astimezone(tzone(settings.TIME_ZONE))).strftime("%Y-%m-%d %H:%M")
+        sugar.append({'x': ts, 'y': level.sugar_level})
+
+    return JsonResponse(data={
+        'datasets': [
+            {'label': 'fat', 'data': fat, 'borderColor': '#CC66FF', 'fill': 0},
+            {'label': 'carbohydrates', 'data': carbohydrates, 'borderColor': '#99ff00', 'fill': 0},
+            {'label': 'proteins', 'data': proteins, 'borderColor': '#ffff80', 'fill': 0},
+            {'label': 'Sugar Level', 'data': sugar, 'borderColor': '#F39C12', 'fill': 0},
+        ]
+    },
+    )
 
 
 @login_required
