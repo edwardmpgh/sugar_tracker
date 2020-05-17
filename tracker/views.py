@@ -211,6 +211,48 @@ def add_common_meal(request):
     return render(request, 'tracker/generic_form.html', context)
 
 
+@login_required
+def sugar_graph(request):
+
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='sugar_graph',
+                   app_page='sugar_graph',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+
+    return render(request, 'tracker/sugar_graph.html', context)
+
+
+@login_required
+def meal_graph(request):
+
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='meal_graph',
+                   app_page='meal_graph',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+
+    return render(request, 'tracker/meal_graph.html', context)
+
+
+@login_required
+def meal_sugar_graph(request):
+
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='meal_sugar_graph',
+                   app_page='meal_sugar_graph',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+
+    return render(request, 'tracker/meal_sugar_graph.html', context)
+
+
 # JSon Responses
 @login_required
 def get_meal_info(request, meal_id):

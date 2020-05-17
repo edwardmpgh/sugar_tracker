@@ -1,0 +1,14 @@
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link {% if page == 'index' %}active{% endif %}" href="{% url 'index' %}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if page == 'sugar_graph' %}active{% endif %}" href="{% url 'sugar_graph' %}">Sugar Levels</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if page == 'meal_graph' %}active{% endif %}" href="{% url 'meal_graph' %}">Meals</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if page == 'meal_sugar_graph' %}active{% endif %}" href="{% url 'meal_sugar_graph' %}">Sugar and Meals</a>
+  </li>
+</ul>

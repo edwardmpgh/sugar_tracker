@@ -1,3 +1,5 @@
+from pytz import timezone as tzone
+
 from django.db import models
 from django.db.models.functions import Lower
 from django.conf import settings
@@ -35,8 +37,8 @@ class CommonField(models.Model):
 
 
 class SugarLevel(CommonField):
-    timestamp = models.DateTimeField(default=timezone.now())
-    sugar_level = models.CharField(max_length=25, unique=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+    sugar_level = models.CharField(max_length=25)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
@@ -56,7 +58,7 @@ MEAL_TYPES = [
 
 
 class MealTime(CommonField):
-    timestamp = models.DateTimeField(default=timezone.now())
+    timestamp = models.DateTimeField(default=timezone.now)
     meal_type = models.CharField(max_length=2, choices=MEAL_TYPES)
     fat = models.IntegerField(blank=True, null=True)
     carbohydrates = models.IntegerField(blank=True, null=True)
