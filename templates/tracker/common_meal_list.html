@@ -1,0 +1,48 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li
+            {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+    <div class="row">
+        <div class="col">
+            {% include 'tracker/graph_navs.html' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="float-right" href="{% url 'add_common_meal' %}"><span class="material-icons md-48 md-dark">add_circle</span></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class= "card-group">
+            {% for meal in common_meals %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title"><h1>{{ meal.name }}</h1></div>
+                        <p class="card-text">
+                            <b>Fat</b>: {{ meal.fat }}<br/>
+                            <b>Carbohydrates</b>: {{ meal.carbohydrates }}<br/>
+                            <b>Protein</b>: {{ meal.protein }}<br/>
+                            <b>Comment</b>: {{ meal.comments }}<br/>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="float-right">
+                            <a href="{% url 'edit_common_meal' meal.id %}"><span class="material-icons">edit</span></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

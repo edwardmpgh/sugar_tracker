@@ -11,11 +11,15 @@
 </ul>
 {% endif %}
     {% include 'tracker/graph_navs.html' %}
-
-    <div class="btn-group-vertical">
-    <a class="btn btn-primary" href="{% url 'add_sugar_level' %}">Add Sugar Level</a>
-    <a class="btn btn-primary" href="{% url 'add_meal' %}">Add Meal</a>
-    <a class="btn btn-secondary" href="{% url 'add_common_meal' %}">Add Common Meal</a>
+    <div class="row">
+        <div class="col">
+            <div class="btn-group-horizontal">
+                <a class="btn btn-secondary" href="{% url 'add_sugar_level' %}"><span class="material-icons">linear_scale</span><br/>Add Sugar Level</a>
+                <a class="btn btn-secondary" href="{% url 'add_meal' %}"><span class="material-icons">restaurant_menu</span><br/>Add Meal</a>
+            </div>
+        </div>
     </div>
+
+
 
 {% endblock content %}

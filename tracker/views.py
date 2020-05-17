@@ -188,29 +188,6 @@ def add_meal(request):
     return render(request, 'tracker/meal_form.html', context)
 
 
-def add_common_meal(request):
-    current_user = request.user
-
-    context = dict(title=SYSTEM_TITLE,
-                   page='index',
-                   app_page='meal',
-                   fullname=current_user.first_name + ' ' + current_user.last_name,
-                   )
-    form = CommonMealForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            f = form.save(commit=False)
-            f.user = current_user
-            form.save()
-            return HttpResponseRedirect(reverse('index'))
-
-    context['form'] = form
-    context['form_title'] = 'Add a Common Meal'
-    context['button_title'] = 'Add'
-
-    return render(request, 'tracker/generic_form.html', context)
-
-
 @login_required
 def sugar_graph(request):
 
@@ -269,3 +246,68 @@ def get_meal_info(request, meal_id):
         'carbohydrates': meal.carbohydrates,
         'protein': meal.proteins,
     })
+
+
+# common meals
+@login_required
+def common_meal_list(request):
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='common',
+                   app_page='list',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+
+    context['common_meals'] = CommonMeals.objects.filter(trash=False, active=True, user=current_user)
+
+    return render(request, 'tracker/common_meal_list.html', context)
+
+
+@login_required
+def add_common_meal(request):
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='index',
+                   app_page='meal',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+    form = CommonMealForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = current_user
+            form.save()
+            return HttpResponseRedirect(reverse('common_meal_list'))
+
+    context['form'] = form
+    context['form_title'] = 'Add a Common Meal'
+    context['button_title'] = 'Add'
+
+    return render(request, 'tracker/generic_form.html', context)
+
+
+@login_required
+def edit_common_meal(request, common_meal_id):
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='index',
+                   app_page='meal',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+    instance = get_object_or_404(CommonMeals, id=common_meal_id)
+    form = CommonMealForm(request.POST or None, instance=instance)
+    if request.method == 'POST':
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = current_user
+            form.save()
+            return HttpResponseRedirect(reverse('common_meal_list'))
+
+    context['form'] = form
+    context['form_title'] = 'Edit a Common Meal'
+    context['button_title'] = 'Save'
+
+    return render(request, 'tracker/generic_form.html', context)
