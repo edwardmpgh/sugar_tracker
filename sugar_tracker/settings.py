@@ -141,3 +141,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+FOOD_DATA_CENTREAL_URL = 'https://api.nal.usda.gov/fdc'
+FOOD_DATA_CENTRAL_API_KEY = '6V5J9Sf2ebauF8YehuAeGmTJDoCxNNHTwzSJhO78'

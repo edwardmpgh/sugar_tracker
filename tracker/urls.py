@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/chart/mix/', views.mix_chart, name='mix_chart'),
     # JSon Responses
     path('get/meal/<int:meal_id>/', views.get_meal_info, name='get_meal_info'),
+    # FDC API calls
+    path('get/food/search/<str:search_term>/', views.get_food_list,name='get_food_list'),
 ]

@@ -88,3 +88,19 @@ class CommonMeals(CommonField):
 
     def __str__(self):
         return '%s' % self.name
+
+
+class FoodNutrition(CommonField):
+    name = models.CharField(max_length=30)
+    quantity = models.CharField(max_length=30)
+    fat = models.IntegerField(blank=True, null=True)
+    carbohydrates = models.IntegerField(blank=True, null=True)
+    proteins = models.IntegerField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        db_table = '%sfood_nutrition' % DB_PREFIX
+        ordering = ['name']
+
+    def __str__(self):
+        return '%s' % self.name

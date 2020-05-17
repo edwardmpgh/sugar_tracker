@@ -1,5 +1,6 @@
 from datetime import datetime
 from pytz import timezone as tzone
+import requests
 
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -84,7 +85,6 @@ def meal_chart(request):
             {'label': 'fat', 'data': fat, 'borderColor': '#CC66FF', 'fill': 0, 'pointBackgroundColor': '#4A235A'},
             {'label': 'carbohydrates', 'data': carbohydrates, 'borderColor': '#99ff00', 'fill': 0, 'pointBackgroundColor': '#186A3B'},
             {'label': 'proteins', 'data': proteins, 'borderColor': '#ffff80', 'fill': 0, 'pointBackgroundColor': '#D4AC0D'},
-
         ]
     },
     )
@@ -311,3 +311,20 @@ def edit_common_meal(request, common_meal_id):
     context['button_title'] = 'Save'
 
     return render(request, 'tracker/generic_form.html', context)
+
+
+# FDC API calls
+@login_required
+def get_food_list(request, search_term):
+    current_user = request.user
+
+    context = dict(title=SYSTEM_TITLE,
+                   page='index',
+                   app_page='meal',
+                   fullname=current_user.first_name + ' ' + current_user.last_name,
+                   )
+    url = '%s/v1/foods/search?api_key=%s&query=%s' % (settings.FOOD_DATA_CENTREAL_URL,
+                                                      settings.FOOD_DATA_CENTRAL_API_KEY,
+                                                      search_term)
+    response = requests.get(url)
+    return JsonResponse(response.json())

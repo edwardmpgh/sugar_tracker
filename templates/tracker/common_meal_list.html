@@ -21,7 +21,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <div class= "card-group">
+            <div class= "card-columns">
             {% for meal in common_meals %}
                 <div class="card">
                     <div class="card-body">
@@ -29,7 +29,7 @@
                         <p class="card-text">
                             <b>Fat</b>: {{ meal.fat }}<br/>
                             <b>Carbohydrates</b>: {{ meal.carbohydrates }}<br/>
-                            <b>Protein</b>: {{ meal.protein }}<br/>
+                            <b>Protein</b>: {{ meal.proteins }}<br/>
                             <b>Comment</b>: {{ meal.comments }}<br/>
                         </p>
                     </div>
